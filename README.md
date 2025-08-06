@@ -1,66 +1,279 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 👨‍💻 Blog Laravel (S.O.L.I.D + Clean Code)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Projeto criado por **Henderson Camilo** com o objetivo de estudar e aplicar os princípios **S.O.L.I.D**, Clean Code e boas práticas em Laravel, implementando funcionalidades CRUD semelhantes a redes sociais.
+> O propósito é colocar em prática conceitos teóricos aprendidos em estudos anteriores, criando um sistema robusto e bem estruturado.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📦 Funcionalidades
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   ✅ Autenticação de usuários
+-   ✅ CRUD completo de posts
+-   ✅ Sistema de comentários
+-   ✅ Upload de imagens
+-   ✅ Painel administrativo
+-   ✅ Configurações do blog
+-   ✅ Sistema de permissões
+-   ✅ Testes automatizados
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🧱 Estrutura de Pastas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── PostController.php           # Controller de posts
+│   │   ├── CommentController.php        # Controller de comentários
+│   │   └── AdminController.php          # Controller administrativo
+│   ├── Requests/
+│   │   ├── StorePostRequest.php         # Validações para criar post
+│   │   └── UpdatePostRequest.php        # Validações para atualizar post
+│   └── Resources/
+│       ├── PostResource.php             # Transformer de posts
+│       └── CommentResource.php          # Transformer de comentários
+├── Models/
+│   ├── User.php                         # Modelo de usuário
+│   ├── Post.php                         # Modelo de post
+│   └── Comment.php                      # Modelo de comentário
+├── Policies/
+│   ├── PostPolicy.php                   # Autorizações de posts
+│   └── CommentPolicy.php                # Autorizações de comentários
+├── Providers/
+│   └── AppServiceProvider.php           # Injeção de dependências
+├── Services/
+│   ├── PostService.php                  # Lógica de negócio de posts
+│   └── ImageService.php                 # Serviço de upload de imagens
+└── Observers/
+    └── PostObserver.php                 # Observer para posts
+resources/
+└── views/
+    ├── posts/
+    │   ├── index.blade.php              # Lista de posts
+    │   ├── show.blade.php               # Visualizar post
+    │   └── create.blade.php             # Criar post
+    └── admin/
+        └── dashboard.blade.php          # Painel administrativo
+tests/
+├── Unit/
+│   ├── Services/
+│   │   ├── PostServiceTest.php
+│   │   └── ImageServiceTest.php
+│   └── Models/
+│       ├── PostTest.php
+│       └── CommentTest.php
+├── Feature/
+│   └── Controllers/
+│       ├── PostControllerTest.php
+│       └── CommentControllerTest.php
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Como executar o projeto
 
-## Laravel Sponsors
+### 🔧 Requisitos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   PHP 8.0+
+-   Composer
+-   MySQL
+-   Laravel 9.x
+-   Docker (opcional)
+-   Node.js (para assets)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 🚨 Pré-requisitos importantes para Docker
 
-## Contributing
+### 1. **Sistemas Windows**:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   Certifique-se que o arquivo `entrypoint.sh` tenha terminadores de linha no formato **Unix (LF)**
+-   Use editores como VS Code, Notepad++ ou Sublime Text para conversão
+-   **No VS Code**: clique no `CRLF` no canto inferior direito e selecione `LF`
+-   **No Notepad++**: vá em `Editar` → `Conversão EOL` → `Formato Unix (LF)`
 
-## Code of Conduct
+### 2. **Arquivo .env**:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# ANTES de subir os containers, execute:
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+### 3. **Permissões (Linux/macOS)**:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Garanta que o entrypoint.sh seja executável:
+chmod +x entrypoint.sh
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 🚀 Rodando com Docker (recomendado)
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/Henderson07/first-blog.git
+cd first-blog
+
+# 2. Configure o arquivo .env
+cp .env.example .env
+
+# 3. Suba os containers com Docker Compose
+docker-compose up --build
+```
+
+**Acesse**: http://localhost:8000
+
+⚠️ **O container `laravel-app` já executa automaticamente**:
+
+-   `composer install`
+-   `php artisan key:generate`
+-   `php artisan migrate --seed`
+-   Configuração de permissões nas pastas necessárias
+-   Compilação dos assets (npm)
+-   Inicialização do Apache no container
+
+---
+
+### 💻 Rodando manualmente (sem Docker)
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/Henderson07/first-blog.git
+cd first-blog
+
+# 2. Instale as dependências
+composer install
+
+# 3. Copie e configure o .env
+cp .env.example .env
+php artisan key:generate
+
+# 4. Configure o banco de dados no .env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=blog_laravel
+DB_USERNAME=root
+DB_PASSWORD=root
+
+# 5. Rode as migrations e seeders
+php artisan migrate --seed
+
+# 6. Compile os assets
+npm install
+npm run dev
+
+# 7. Inicie o servidor
+php artisan serve
+```
+
+**Acesse**: [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🐛 Solucionando problemas comuns
+
+### Docker não sobe ou apresenta erros:
+
+1. **Verifique se o arquivo `entrypoint.sh` está no formato Unix (LF)**
+2. **Confirme que o `.env` foi criado** a partir do `.env.example`
+3. **Limpe o cache do Docker**:
+    ```bash
+    docker-compose down
+    docker system prune -f
+    docker-compose up --build
+    ```
+
+### Erro de permissão (Linux/macOS):
+
+```bash
+sudo chmod +x entrypoint.sh
+sudo chown -R $USER:$USER storage bootstrap/cache
+```
+
+### Problemas com assets:
+
+```bash
+# Limpe o cache e recompile
+npm run clean
+npm install
+npm run dev
+```
+
+---
+
+## 🧪 Teste o fluxo completo
+
+1. Acesse a página inicial do blog
+2. Faça login ou registre-se
+3. Crie um novo post
+4. Adicione comentários
+5. Teste o painel administrativo
+6. Faça upload de imagens
+
+---
+
+## 🧭 Fluxo de Branches (Git Flow Simplificado)
+
+-   `main` → versão estável e pronta para produção
+-   `dev` → integração de features
+-   `feature/posts` → desenvolvimento do sistema de posts
+-   `feature/comments` → desenvolvimento do sistema de comentários
+-   `feature/admin` → desenvolvimento do painel administrativo
+
+---
+
+## 🏷️ Versionamento (SemVer)
+
+| Versão | Descrição                            |
+| ------ | ------------------------------------ |
+| v1.0.0 | Primeira versão funcional do blog    |
+| v1.1.0 | Nova feature: sistema de comentários |
+| v1.2.0 | Nova feature: painel administrativo  |
+| v1.2.1 | Correções de bugs                    |
+
+Use:
+
+```bash
+git tag -a v1.0.0 -m "Versão estável inicial do blog"
+git push origin v1.0.0
+```
+
+---
+
+## 🛠 Tecnologias Utilizadas
+
+-   **Backend**: PHP 8.0+, Laravel 9.x
+-   **Frontend**: Livewire
+-   **Banco de dados**: MySQL
+-   **Containerização**: Docker, Docker Compose
+-   **Testes**: PHPUnit
+-   **Controle de versão**: Git
+
+---
+
+## 🏗 Padrões Implementados
+
+-   **Repository Pattern**: Abstração da camada de dados
+-   **Service Layer**: Lógica de negócio separada
+-   **DTOs**: Transferência de dados estruturada
+-   **Form Requests**: Validações centralizadas
+-   **Observers**: Eventos e listeners
+-   **Policies**: Autorização baseada em recursos
+
+---
+
+## Projeto Retirado do YouTube
+
+**Henderson Camilo**  
+Desenvolvedor PHP/Laravel especializado em sistemas ERP  
+📧 henderson.larablog@gmail.com  
+[LinkedIn](https://www.linkedin.com/in/henderson-camilo-gomes-da-silva-5468a1211/)
+
+---
+
+## ✅ Licença
+
+Este projeto é **livre para estudo e aprendizado**.

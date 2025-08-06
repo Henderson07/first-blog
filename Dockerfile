@@ -1,75 +1,36 @@
-ARG TZ=America/Sao_Paulo
+FROM php:8.0-apache
 
-FROM ubuntu:20.04
+# Set timezone
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Configure timezone
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
-# Update packages and install dependencies
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y software-properties-common \
-    tzdata \
+# Install PHP extensions
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
     unzip \
-    sudo \
+    curl \
     vim \
-    curl
-
-# Add the PHP 8.1 repository and install PHP and dependencies
-RUN add-apt-repository -y ppa:ondrej/php && apt-get -y update
-RUN apt install -y php8.0
-RUN apt install -y php8.0-cli
-RUN apt install -y php8.0-dev
-RUN apt install -y php8.0-xml
-RUN apt install -y php8.0-curl
-RUN apt install -y php8.0-bcmath
-RUN apt install -y php8.0-gd
-RUN apt install -y php8.0-mbstring
-RUN apt install -y php8.0-mysql
-RUN apt install -y php8.0-xsl
-RUN apt install -y php8.0-zip
-RUn apt install -y php8.0-pdo-mysql
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php8.0 -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configure Apache
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
+# Set working directory
+WORKDIR /var/www/html
 
-# Install Apache and dependencies
-RUN apt-get install -y \
-    apache2 \
-    apache2-utils \
-    libapache2-mod-php8.0 \
-  && a2dismod mpm_event \
-  && a2enmod mpm_prefork \
-  && a2enmod php8.0 \
-  && a2enmod xml2enc \
-  && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-  && a2enmod rewrite \
-  && a2dissite 000-default
-
-# Copy the Apache configuration file
+# Copy Apache config if needed
 COPY blog.conf /etc/apache2/sites-available/blog.conf
 RUN ln -s /etc/apache2/sites-available/blog.conf /etc/apache2/sites-enabled/blog.conf \
     && a2ensite blog.conf
 
-# Set PHP as the default PHP binary
-RUN update-alternatives --set php /usr/bin/php8.0
+# Permissions
+RUN chown -R www-data:www-data /var/www/html
 
-# Set the owner of the document root to www-data
-RUN chown -R www-data:www-data /var/www
-
-# Restart Apache
-RUN service apache2 restart
-
-# Clean up
-RUN apt-get clean
-
-# Expose the HTTP port
 EXPOSE 80
-
-# Start Apache in the foreground
-CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
