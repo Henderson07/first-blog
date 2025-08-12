@@ -15,7 +15,8 @@
             <h2 class="h2 text-center mb-4">Redefinir senha</h2>
             <div class="mb-3">
                 <label class="form-label">Endereço de e-mail</label>
-                <input type="text" class="form-control" placeholder="Email" autocomplete="off" wire:model="email" disabled>
+                <input type="text" class="form-control" placeholder="Email" autocomplete="off" wire:model="email"
+                    disabled>
                 <span class="text-danger">
                     @error('email')
                         {{ $message }}

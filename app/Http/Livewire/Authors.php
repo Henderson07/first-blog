@@ -15,7 +15,7 @@ class Authors extends Component
     use WithPagination;
     public $name, $email, $username, $author_type, $direct_publisher;
     public $search;
-    public $perPage = 4;
+    public $perPage = 12;
     public $selected_author_id;
     public $blocked = 0;
     protected $listeners = [
@@ -61,23 +61,23 @@ class Authors extends Component
         $author->picture = '/backend/dist/img/authors/default.jpg';
         $saved = $author->save();
 
-        $data = array([
+        $data = [
             'name' => $this->name,
             'username' => $this->username,
             'email' => $this->email,
             'password' => $default_password,
             'url' => route('author.profile'),
-        ]);
+        ];
 
         $author_email = $this->email;
         $author_name = $this->name;
 
         if ($saved) {
-            // Mail::send('emails.new-author-email-template', $data, function ($message) use ($author_email, $author_name) {
-            //     $message->from('noreply@example.com', 'Blog');
-            //     $message->to($author_email, $author_name)
-            //         ->subject('Criação de conta');
-            // });
+            Mail::send('emails.new-author-email-template', ['data' => (object) $data], function ($message) use ($author_email, $author_name) {
+                $message->from('noreply@example.com', 'Blog');
+                $message->to($author_email, $author_name)
+                    ->subject('Criação de conta');
+            });
 
             session()->flash('success', 'Novo autor criado com sucesso');
             $this->name = $this->email = $this->username = $this->author_type = $this->direct_publisher = null;
@@ -85,6 +85,8 @@ class Authors extends Component
         } else {
             session()->flash('error', 'Algo deu errado');
         }
+
+        session()->flash('success', 'Autor cadastrado e e-mail enviado com sucesso!');
         // } else {
         //     session()->flash('error', 'Você está offline, verifique sua conexão e tente novamente mais tarde.');
         // }
@@ -137,19 +139,26 @@ class Authors extends Component
             'id' => $author['id'],
         ]);
     }
+
     public function deleteAuthorAction($id)
     {
         $author = User::find($id);
-        $path = 'backend/dist/img/author';
         $author_picture = $author->picture;
 
-        if ($author_picture != null || File::exists(public_path($author_picture))) {
-            File::Delete(public_path($author_picture));
+        // Verifica se há uma imagem específica do autor (não padrão) E se o arquivo existe
+        if (
+            $author_picture != null &&
+            $author_picture != 'backend/dist/img/authors/default.jpg' && // agora com .jpg
+            File::exists(public_path($author_picture))
+        ) {
+            File::delete(public_path($author_picture));
         }
+
         $author->delete();
 
         session()->flash('success', 'Autor excluído com sucesso!');
     }
+
     public function showToast($message, $type)
     {
         return $this->dispatchBrowserEvent('showToast', [
@@ -160,7 +169,9 @@ class Authors extends Component
     public function render()
     {
         return view('livewire.authors', [
-            'authors' => User::search(trim($this->search))->where('id', '!=', auth()->id())->paginate($this->perPage),
+            'authors' => User::search(trim($this->search))
+                ->where('id', '!=', auth()->id())->paginate($this->perPage),
+            // 'authors' => User::where('id', '!=', auth()->id())->paginate($this->perPage),
         ]);
     }
 }

@@ -36,7 +36,7 @@ class AuthorBlogSocialMediaForm extends Component
         ]);
 
         try {
-            
+
             $update = $this->blog_social_media->update([
                 'bsm_facebook' => $this->facebook_url,
                 'bsm_instagram' => $this->instagram_url,

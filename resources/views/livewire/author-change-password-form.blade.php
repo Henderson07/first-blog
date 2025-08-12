@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label for="password" class="form-label">Senha atual*:</label>
+                    <label for="password" class="form-label">Senha atual:</label>
                     <input type="password" class="form-control" placeholder="Senha atual" wire:model="current_password">
                     <span class="text-danger">
                         @error('current_password')
@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label for="new_password" class="form-label">Nova senha*:</label>
+                    <label for="new_password" class="form-label">Nova senha:</label>
                     <input type="password" class="form-control" placeholder="Nova senha" wire:model="new_password">
                     <span class="text-danger">
                         @error('new_password')
@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label for="confirm_new_password" class="form-label">Confirmar nova senha*:</label>
+                    <label for="confirm_new_password" class="form-label">Confirmar nova senha:</label>
                     <input type="password" class="form-control" placeholder="Confirmar nova senha"
                         wire:model="confirm_new_password">
                     <span class="text-danger">

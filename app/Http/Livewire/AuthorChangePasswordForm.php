@@ -14,7 +14,8 @@ class AuthorChangePasswordForm extends Component
     {
         $this->validate([
             'current_password' => [
-                'required', function ($attributes, $value, $fail) {
+                'required',
+                function ($attributes, $value, $fail) {
                     if (!Hash::check($value, User::find(auth('web')->id())->password)) {
                         return $fail(__('Senha informada está incorreta'));
                     }
@@ -40,10 +41,11 @@ class AuthorChangePasswordForm extends Component
         }
     }
 
-    public function showToast($message, $type){
+    public function showToast($message, $type)
+    {
         return $this->dispatchBrowserEvent('showToast', [
-            'tupe'=>$type,
-            'message'=>$message
+            'tupe' => $type,
+            'message' => $message
         ]);
     }
 

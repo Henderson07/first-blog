@@ -34,18 +34,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-auto d-md-flex">
-                <form action="{{ route('author.change-profile-picture') }}" method="POST"
+            <div class="col-auto d-md-flex ms-auto">
+                <form id="profileForm" action="{{ route('author.change-profile-picture') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
 
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            {!! Form::label('business_logo', __('Alterar foto') . ':') !!}
-                            {!! Form::file('business_logo', ['accept' => 'image/jpeg']) !!}
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
+                    <input type="file" name="business_logo" id="business_logo" accept="image/jpeg"
+                        style="display: none;" />
+
+                    <button type="button" class="btn btn-primary"
+                        onclick="document.getElementById('business_logo').click();">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -58,6 +56,14 @@
                     </button>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('business_logo').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            document.getElementById('profileForm').submit();
+        }
+    });
+</script>

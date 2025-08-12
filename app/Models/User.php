@@ -62,8 +62,8 @@ class User extends Authenticatable
     }
     public function scopeSearch($query, $term)
     {
-        if ($query && $term) {
-            $term = "%$term&";
+        if (!empty($term)) {
+            $term = "%{$term}%";
             $query->where(function ($query) use ($term) {
                 $query->where('name', 'like', $term)
                     ->orWhere('email', 'like', $term);
