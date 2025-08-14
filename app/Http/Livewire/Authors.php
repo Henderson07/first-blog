@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Nette\Utils\Random;
 use Illuminate\Support\Facades\Mail;
 use Livewire\WithPagination;
+use Illuminate\Support\Str;
+
 
 class Authors extends Component
 {
@@ -99,9 +101,10 @@ class Authors extends Component
         $this->username = $author['username'];
         $this->author_type = $author['type'];
         $this->direct_publisher = $author['direct_publish'];
-        $this->blocked = $author['blocked'];
+        $this->blocked = $author['blocked'] === '1';
         $this->dispatchBrowserEvent('showEditAuthorModal');
     }
+
     public function updateAuthor()
     {
         $this->validate([
@@ -116,10 +119,11 @@ class Authors extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'username' => $this->username,
-                'author_type' => $this->author_type,
+                'type' => $this->author_type,
                 'direct_publisher' => $this->direct_publisher,
                 'blocked' => $this->blocked,
             ]);
+
 
             if ($query) {
                 $this->dispatchBrowserEvent('closeUpdateAuthorModal');
@@ -144,20 +148,24 @@ class Authors extends Component
     {
         $author = User::find($id);
         $author_picture = $author->picture;
+        $default_picture = 'backend/dist/img/authors/default.jpg';
 
-        // Verifica se há uma imagem específica do autor (não padrão) E se o arquivo existe
+        $fullPath = public_path(ltrim($author_picture, '/'));
         if (
-            $author_picture != null &&
-            $author_picture != 'backend/dist/img/authors/default.jpg' && // agora com .jpg
-            File::exists(public_path($author_picture))
+            $author_picture &&
+            !Str::endsWith($author_picture, 'default.jpg') &&
+            File::exists($fullPath)
         ) {
-            File::delete(public_path($author_picture));
+            File::delete($fullPath);
         }
+
 
         $author->delete();
 
         session()->flash('success', 'Autor excluído com sucesso!');
     }
+
+
 
     public function showToast($message, $type)
     {
