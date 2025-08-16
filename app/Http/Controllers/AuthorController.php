@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
+use App\Models\Post;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+
 class AuthorController extends Controller
 {
     public function index(Request $request)
@@ -171,6 +176,74 @@ class AuthorController extends Controller
             ];
 
             return redirect()->route('author.settings')->with('status', $output);
+        }
+    }
+
+    public function createPost(Request $request)
+    {
+        $request->validate([
+            'post_title' => 'required|unique:posts,post_title',
+            'post_content' => 'required',
+            'post_category' => 'required|exists:sub_categories,id',
+            'featured_image' => 'required|mimes:jpeg,jpg,png|max:1024',
+        ]);
+
+        try {
+            if ($request->hasFile('featured_image')) {
+                $file = $request->file('featured_image');
+                $new_filename = time() . '_' . $file->getClientOriginalName();
+                $path = 'images/post_images/';
+
+                // Certifique-se que o diretório existe
+                if (!Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->makeDirectory($path);
+                }
+
+                // Salva o arquivo
+                $upload = Storage::disk('public')->put($path . $new_filename, file_get_contents($file));
+
+                $post_thumbnails_path = $path . 'thumbnails';
+                if (!Storage::disk('public')->exists($post_thumbnails_path)) {
+                    Storage::disk('public')->makeDirectory($post_thumbnails_path, 0755, true, true);
+                }
+
+                // Caminho completo da imagem original
+                $originalPath = storage_path('app/public/' . $path . $new_filename);
+
+                //Create square thumbnail
+                Image::make($originalPath)
+                    ->fit(200, 200)
+                    ->save(storage_path('app/public/' . $path . 'thumbnails/thumb_' . $new_filename));
+
+                //Create resized image
+                Image::make($originalPath)
+                    ->fit(500, 350)
+                    ->save(storage_path('app/public/' . $path . 'thumbnails/resized_' . $new_filename));
+
+
+                if (!$upload) {
+                    return response()->json(['code' => 0, 'msg' => 'Não foi possível salvar a imagem.']);
+                }
+
+                $post = new Post();
+                $post->author_id = auth()->id();
+                $post->category_id = $request->post_category;
+                $post->post_title = $request->post_title;
+                // $post->post_slug = Str::slug($request->post_title);
+                $post->post_content = $request->post_content;
+                $post->featured_image = $new_filename;
+
+                $saved = $post->save();
+
+                if ($saved) {
+                    return response()->json(['code' => 1, 'msg' => 'Post criado com sucesso!']);
+                    // session()->flash('success', 'Autor cadastrado e e-mail enviado com sucesso!');
+                } else {
+                    return response()->json(['code' => 0, 'msg' => 'Algo deu errado ao salvar o post']);
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(['code' => 0, 'msg' => 'Erro: ' . $e->getMessage()]);
         }
     }
 }

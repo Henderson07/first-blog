@@ -216,7 +216,7 @@
                             <div class="dropdown-menu">
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="./empty.html">
+                                        <a class="dropdown-item" href="{{ route('author.posts.add-post') }}">
                                             Adicionar novo
                                         </a>
                                         <a class="dropdown-item" href="./cookie-banner.html">

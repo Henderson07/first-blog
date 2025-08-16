@@ -20,5 +20,10 @@ Route::prefix('author')->name('author.')->group(function () {
         Route::post('/change-blog-favicon', [AuthorController::class, 'changeBlogFavicon'])->name('change-logo-favicon');
         Route::view('/authors', 'backend.pages.authors')->name('authors');
         Route::view('categories', 'backend.pages.categories')->name('categories');
+
+        Route::prefix('posts')->name('posts.')->group(function () {
+            Route::view('/add-post', 'backend.pages.add-post')->name('add-post');
+            Route::post('/create', [AuthorController::class, 'createPost'])->name('create');
+        });
     });
 });

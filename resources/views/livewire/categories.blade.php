@@ -108,7 +108,7 @@
                                             {{ $subcategory->parentcategory->category_name }}
                                         </td>
                                         <td>
-                                            4
+                                            {{ $subcategory->posts->count() }}
                                         </td>
                                         <td>
                                             <div class="btn-group">
