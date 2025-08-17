@@ -60,6 +60,12 @@ class User extends Authenticatable
             return asset('/backend/dist/img/authors/default.jpg');
         }
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id', 'id');
+    }
+
     public function scopeSearch($query, $term)
     {
         if (!empty($term)) {

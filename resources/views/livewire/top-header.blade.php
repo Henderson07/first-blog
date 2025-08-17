@@ -190,14 +190,15 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('author.categories') }}">
-                                <span class="nav-link-title">
-                                    Categorias
-                                </span>
-                            </a>
-                        </li>
                         @if (auth()->user()->type == 1)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('author.categories') }}">
+                                    <span class="nav-link-title">
+                                        Categorias
+                                    </span>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('author.authors') }}">
                                     <span class="nav-link-title">
@@ -217,33 +218,35 @@
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('author.posts.add-post') }}">
-                                            Adicionar novo
+                                            Adicionar Post
                                         </a>
-                                        <a class="dropdown-item" href="./cookie-banner.html">
+                                        <a class="dropdown-item" href="{{ route('author.posts.all_posts') }}">
                                             Listagem de posts
-                                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            {{-- <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span> --}}
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item active dropdown">
-                            <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
-                                data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                <span class="nav-link-title">
-                                    Opções
-                                </span>
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-menu-columns">
-                                    <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="{{ route('author.settings') }}">
-                                            Configuração geral
-                                        </a>
+                        @if (auth()->user()->type == 1)
+                            <li class="nav-item active dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-title">
+                                        Configurações
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="{{ route('author.settings') }}">
+                                                Configuração geral
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

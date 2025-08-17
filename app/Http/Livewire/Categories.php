@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Str;
+use App\Models\Post;
 
 class Categories extends Component
 {
@@ -19,7 +20,9 @@ class Categories extends Component
     public $updateSubCategoryMode = false;
 
     protected $listeners = [
-        'resetModalForm'
+        'resetModalForm',
+        'deleteCategorytAction',
+        'deleteSubCategorytAction'
     ];
 
     public function resetModalForm()
@@ -97,9 +100,11 @@ class Categories extends Component
             $this->dispatchBrowserEvent('hideSubCategoriesModal');
             $this->parent_category = null;
             $this->subcategory_name = null;
-            session()->flash('success', 'SubCategoria adicionada com sucesso!');
+            $this->showToastr('SubCategoria adicionada com sucesso', 'success');
+            // session()->flash('success', 'SubCategoria adicionada com sucesso!');
         } else {
-            session()->flash('error', 'Erro ao adicionar SubCategoria' . $e->getMessage());
+            $this->showToastr('Erro ao adicionar SubCategoria', 'error');
+            // session()->flash('error', 'Erro ao adicionar SubCategoria' . $e->getMessage());
         }
     }
 
@@ -139,7 +144,58 @@ class Categories extends Component
         }
     }
 
-    public function showToast($message, $type)
+    public function deleteCategory($id)
+    {
+        $category = Category::find($id);
+        $this->dispatchBrowserEvent('deleteCategory', [
+            'title' => 'Tem certeza?',
+            'html' => 'Você deseja apagar a categoria <b>' . $category->category_name . '</b>?',
+            'id' => $id
+        ]);
+    }
+
+    public function deleteCategorytAction($id)
+    {
+        $category = Category::where('id', $id)->first();
+        $subcategories = SubCategory::where('parent_category', $category->id)->whereHas('posts')->with('posts')->get();
+
+        if (!empty($subcategories) && count($subcategories) > 0) {
+            $totalPosts = 0;
+            foreach ($subcategories as $subcat) {
+                $totalPosts += Post::where('category_id', $subcat->id)->get()->count();
+            }
+            $this->showToastr('Essa categoria tem (' . $totalPosts . ') relacionadas a ela e não podem serem excluídas.', 'error');
+        } else {
+            SubCategory::where('parent_category', $category->id)->delete();
+            $category->delete();
+            $this->showToastr('Categoria deletada com sucesso.', 'info');
+        }
+    }
+
+    public function deleteSubCategory($id)
+    {
+        $subcategory = SubCategory::find($id);
+        $this->dispatchBrowserEvent('deleteSubCategory', [
+            'title' => 'Tem certeza?',
+            'html' => 'Você deseja apagar a categoria <b>' . $subcategory->subcategory_name . '</b>?',
+            'id' => $id
+        ]);
+    }
+
+    public function deleteSubCategorytAction($id)
+    {
+        $subcategory = SubCategory::where('id', $id)->first();
+        $posts = Post::where('category_id', $subcategory->id)->get()->toArray();
+
+        if (!empty($posts) && count($posts) > 0) {
+            $this->showToastr('Essa subcategoria tem (' . count($posts) . ') relacionadas a ela e não podem serem excluídas.', 'error');
+        } else {
+            $subcategory->delete();
+            $this->showToastr('Categoria deletada com sucesso.', 'info');
+        }
+    }
+
+    public function showToastr($message, $type)
     {
         return $this->dispatchBrowserEvent('showToast', [
             'type' => $type,

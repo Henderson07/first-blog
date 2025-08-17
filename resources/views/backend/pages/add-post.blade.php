@@ -11,12 +11,12 @@
         }
     </style>
 
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">Adicionar novo Post</h2>
-                </div>
+    <div class="page-header d-print-none mb-2">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Adicionar novo Post
+                </h2>
             </div>
         </div>
     </div>

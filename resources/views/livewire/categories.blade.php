@@ -56,7 +56,9 @@
                                             <div class="btn-group">
                                                 <a href="" class="btn btn-sm btn-primary"
                                                     wire:click.prevent='editCategory({{ $category->id }})'>Editar</a>
-                                                <a href="" class="btn btn-sm btn-danger">Excluir</a>
+                                                <a href=""
+                                                    wire:click.prevent='deleteCategory({{ $category->id }})'
+                                                    class="btn btn-sm btn-danger">Excluir</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -115,7 +117,9 @@
                                                 <a href="" class="btn btn-sm btn-primary"
                                                     wire:click.prevent='editSubCategory({{ $subcategory->id }})'>Editar</a>
                                                 &nbsp;
-                                                <a href="" class="btn btn-sm btn-danger">Excluir</a>
+                                                <a href=""
+                                                    wire:click.prevent='deleteSubCategory({{ $subcategory->id }})'
+                                                    class="btn btn-sm btn-danger">Excluir</a>
                                             </div>
                                         </td>
                                     </tr>
