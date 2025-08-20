@@ -24,6 +24,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.14.0/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.min.css">
+    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="/amsify/amsify.suggestags.css">
     <!-- app css -->
 
     @stack('stylesheet')
@@ -58,12 +62,16 @@
     <script src="/backend/dist/libs/ijaboCropTool/ijaboCropTool.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="/jquery-ui-1.13.3/jquery-ui.min.js"></script>
+    <script src="/amsify/jquery.amsify.suggestags.js"></script>
     <!-- Tabler Core -->
     <script src="/backend/dist/js/tabler.min.js?1684106062" defer></script>
     @stack('scripts')
     @livewireScripts
 
     <script>
+        $('input[name="post_tags"]').amsifySuggestags();
+
         window.addEventListener('showToastr', function(event) {
             console.log('event', event);
             toast.remove();

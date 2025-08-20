@@ -173,7 +173,7 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ route('author.profile') }}" class="dropdown-item">Perfil</a>
                         <div class="dropdown-divider"></div>
-                        <a href="./settings.html" class="dropdown-item">Configurações</a>
+                        <a href="{{ route('author.profile') }}" class="dropdown-item">Configurações</a>
                         <a href="{{ route('author.logout') }}" class="dropdown-item"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sair</a>
                         <form action="{{ route('author.logout') }}" id="logout-form" method="POST">@csrf</form>

@@ -15,14 +15,16 @@ class Categories extends Component
     public $updateCategoryMode = false;
 
     public $subcategory_name;
-    public $parent_category;
+    public $parent_category = 0;
     public $selected_subcategory_id;
     public $updateSubCategoryMode = false;
 
     protected $listeners = [
         'resetModalForm',
         'deleteCategorytAction',
-        'deleteSubCategorytAction'
+        'deleteSubCategorytAction',
+        'updateCategoryOrdering',
+        'updateSubCategoryOrdering'
     ];
 
     public function resetModalForm()
@@ -193,6 +195,30 @@ class Categories extends Component
             $subcategory->delete();
             $this->showToastr('Categoria deletada com sucesso.', 'info');
         }
+    }
+
+    public function updateCategoryOrdering($positions)
+    {
+        foreach ($positions as $position) {
+            $index = $position[0];
+            $newPosition = $position[1];
+            Category::where('id', $index)->update([
+                'ordering' => $newPosition
+            ]);
+        }
+        $this->showToastr('Categoria ordenada com sucesso!', 'success');
+    }
+
+    public function updateSubCategoryOrdering($positions)
+    {
+        foreach ($positions as $position) {
+            $index = $position[0];
+            $newPosition = $position[1];
+            SubCategory::where('id', $index)->update([
+                'ordering' => $newPosition
+            ]);
+        }
+        $this->showToastr('Subcategoria ordenada com sucesso!', 'success');
     }
 
     public function showToastr($message, $type)

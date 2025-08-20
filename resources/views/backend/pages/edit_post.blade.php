@@ -66,6 +66,10 @@
                                 alt="Imagem em destaque" class="img-thumbnail w-100" id="image-previewer"
                                 style="height: auto;">
                         </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Post tags</label>
+                            <input type="text" class="form-control" name="post_tags" value="{{ $post->post_tags }}">
+                        </div>
                         <button type="submit" class="btn btn-primary">Editar Post</button>
                     </div>
                 </div>

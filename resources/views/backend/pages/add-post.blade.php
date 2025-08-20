@@ -59,6 +59,10 @@
                             <img src="" alt="" class="img-thumbnail w-100" id="image-previewer"
                                 style="height: auto;">
                         </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Post tags</label>
+                            <input type="text" class="form-control" name="post_tags">
+                        </div>
                         <button type="submit" class="btn btn-primary">Salvar Post</button>
                     </div>
                 </div>
@@ -121,6 +125,7 @@
                         $(form)[0].reset();
                         $('div.image_holder').find('img').attr('src', '');
                         CKEDITOR.instances.post_content.setData('');
+                        $('input[name="post_tags"]').amsifySuggestags();
                         toastr.success(response.msg);
                     } else {
                         toastr.error(response.msg);
