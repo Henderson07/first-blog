@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="/amsify/amsify.suggestags.css">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
     <!-- app css -->
 
     @stack('stylesheet')

@@ -22,6 +22,7 @@
 
     <!-- # CSS Plugins -->
     <link rel="stylesheet" href="/frontend/plugins/bootstrap/bootstrap.min.css">
+    @stack('stylesheets')
 
     <!-- # Main Style Sheet -->
     <link rel="stylesheet" href="/frontend/css/style.css">
@@ -45,7 +46,7 @@
     <!-- # JS Plugins -->
     <script src="/frontend/plugins/jquery/jquery.min.js"></script>
     <script src="/frontend/plugins/bootstrap/bootstrap.min.js"></script>
-
+    @stack('scripts')
     <!-- Main Script -->
     <script src="/frontend/js/script.js"></script>
 

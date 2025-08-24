@@ -1,2 +1,2 @@
--Olá <b> {{ $name }}
-    {{ $body_message }}
+- Olá <b>{{ $name }}</b>
+{!! $body_message !!}

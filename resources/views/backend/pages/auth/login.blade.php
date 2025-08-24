@@ -12,3 +12,11 @@
     </div>
 
 @endsection
+@push('scripts')
+    <script>
+        function togglePassword() {
+            const input = document.getElementById('password');
+            input.type = (input.type === "password") ? "text" : "password";
+        }
+    </script>
+@endpush

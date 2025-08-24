@@ -92,8 +92,6 @@
                         </article>
                     </div>
                 @endforeach
-
-
             </div>
         </div>
         <div class="col-lg-4">
@@ -102,12 +100,14 @@
                     <div class="col-lg-12">
                         <div class="widget">
                             <div class="widget-body">
-                                <img loading="lazy" decoding="async" src="/frontend/images/author.jpg" alt="About Me"
+                                <img loading="lazy" decoding="async" src="/frontend/images/author.png" alt="About Me"
                                     class="w-100 author-thumb-sm d-block">
                                 <h2 class="widget-title my-3">Henderson Camilo</h2>
-                                <p class="mb-3 pb-2">Hello, I’m Hootan Safiyari. A Content writter, Developer and Story
-                                    teller. Working as a Content writter at CoolTech Agency. Quam nihil …</p> <a
-                                    href="about.html" class="btn btn-sm btn-outline-primary">Saber mais</a>
+                                <p class="mb-3 pb-2">Sou desenvolvedor Full Stack com foco no desenvolvimento de sistemas
+                                    ERP web, atuando tanto no backend quanto no frontend. Tenho experiência consolidada em
+                                    PHP (Laravel), C# (.NET), JavaScript, MySQL e Docker, aplicando práticas de Clean Code,
+                                    princípios SOLID e versionamento com Git.</p> <a href="about.html"
+                                    class="btn btn-sm btn-outline-primary">Saber mais</a>
                             </div>
                         </div>
                     </div>
@@ -134,23 +134,7 @@
                             </div>
                         </div>
                     @endif
-                    @if (categories())
-                        <div class="col-lg-12 col-md-6">
-                            <div class="widget">
-                                <h2 class="section-title mb-3">Categorias</h2>
-                                <div class="widget-body">
-                                    <ul class="widget-list">
-                                        @foreach (categories() as $item)
-                                            <li><a href={{ route('category_posts', $item->slug) }}">{{ Str::ucfirst($item->subcategory_name) }}<span
-                                                        class="ml-auto">({{ $item->posts->count() }})</span></a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
+                    <x-categories-list />
                 </div>
             </div>
         </div>

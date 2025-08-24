@@ -19,6 +19,7 @@
         "laravel/ui": "^4.2",
         "laravelcollective/html": "^6.4",
         "livewire/livewire": "^2.12",
+        "phpmailer/phpmailer": "^6.10",
         "realrashid/sweet-alert": "^7.1"
     },
     "require-dev": {

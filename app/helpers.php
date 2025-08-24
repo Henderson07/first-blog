@@ -6,6 +6,9 @@ use App\Models\SubCategory;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 if (!function_exists('blogInfo')) {
     function blogInfo()
@@ -117,5 +120,63 @@ if (!function_exists('categories')) {
             ->with('posts')
             ->orderBy('subcategory_name', 'desc')
             ->get();
+    }
+}
+
+/**
+ *
+ */
+if (!function_exists('latest_sidebar_posts')) {
+    function latest_sidebar_posts($exept = null, $limit = 4)
+    {
+        return Post::where('id', '!=', $exept)
+            ->limit($limit)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+}
+
+/**
+ * Função auxiliar que encaminha email usando a lib php mailer
+ * => sendMail($mailConfig);
+ */
+if (!function_exists('sendMail')) {
+    function sendMail($mailConfig)
+    {
+        require 'PHPMailer/src/Exception.php';
+        require 'PHPMailer/src/PHPMailer.php';
+        require 'PHPMailer/src/SMTP.php';
+
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host       = config('mail.mailers.smtp.host');
+        $mail->SMTPAuth = true;
+        $mail->Username   = config('mail.mailers.smtp.username');
+        $mail->Password   = config('mail.mailers.smtp.password');
+        $mail->SMTPSecure = config('mail.mailers.smtp.encryption');
+        $mail->Port       = config('mail.mailers.smtp.port');
+        $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
+        $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']);
+        $mail->isHTML(true);
+        $mail->Subject = $mailConfig['mail_subject'];
+        $mail->Body = $mailConfig['mail_body'];
+        $mail->CharSet = 'UTF-8';
+
+        if ($mail->send()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+/**
+ * Todas as tags
+ */
+if (!function_exists('all_tags')) {
+    function all_tags()
+    {
+        return Post::where('post_tags', '!=', null)->distinct()->pluck('post_tags')->join(',');
     }
 }
