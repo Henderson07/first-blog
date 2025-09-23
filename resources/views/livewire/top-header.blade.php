@@ -183,7 +183,7 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" href="{{ route('author.home') }}">
                                 <span class="nav-link-title">
                                     Home
@@ -229,7 +229,7 @@
                             </div>
                         </li>
                         @if (auth()->user()->type == 1)
-                            <li class="nav-item active dropdown">
+                            <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-title">
