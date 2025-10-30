@@ -17,8 +17,38 @@ class AuthorController extends Controller
 {
     public function index(Request $request)
     {
-        return view('backend.pages.home');
+        // 🧮 Contadores gerais
+        $totalPosts = \App\Models\Post::count();
+        $totalCategorias = \App\Models\Category::count();
+        $totalSubCategorias = \App\Models\SubCategory::count();
+        $totalAutores = \App\Models\User::count();
+
+        // 📊 Gráfico: total de posts por categoria
+        $postsPorCategoria = \App\Models\SubCategory::withCount('posts')
+            ->orderByDesc('posts_count')
+            ->take(6) // limita as 6 categorias mais usadas
+            ->get();
+
+        $chartLabels = $postsPorCategoria->pluck('subcategory_name');
+        $chartData = $postsPorCategoria->pluck('posts_count');
+
+        // 🗂️ Últimos posts
+        $latestPosts = \App\Models\Post::with(['author', 'subcategory.parentcategory'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('backend.pages.home', compact(
+            'totalPosts',
+            'totalCategorias',
+            'totalSubCategorias',
+            'totalAutores',
+            'chartLabels',
+            'chartData',
+            'latestPosts'
+        ));
     }
+
     public function logout()
     {
         Auth::guard('web')->logout();

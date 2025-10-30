@@ -1,13 +1,13 @@
 <div>
     @if (Session::get('success'))
-        <div class="alert alert-success">
-            {!! Session::get('success') !!}
-        </div>
+    <div class="alert alert-success">
+        {!! Session::get('success') !!}
+    </div>
     @endif
     @if (Session::get('error'))
-        <div class="alert alert-danger">
-            {!! Session::get('error') !!}
-        </div>
+    <div class="alert alert-danger">
+        {!! Session::get('error') !!}
+    </div>
     @endif
     <div class="page-header d-print-none mb-2">
         <div class="container-xl">
@@ -42,27 +42,27 @@
 
     <div class="row row-cards">
         @forelse ($authors as $author)
-            <div class="col-md-6 col-lg-3">
-                <div class="card">
-                    <div class="card-body p-4 text-center">
-                        <span class="avatar avatar-xl mb-3 rounded-circle"
-                            style="background-image: url({{ asset($author->picture) }})"></span>
-                        <h3 class="m-0 mb-1"><a href="#">{{ $author->name }}</a></h3>
-                        <div class="text-muted">{{ $author->email }}</div>
-                        <div class="mt-3">
-                            <span class="badge bg-purple-lt">{{ $author->authorType->name }}</span>
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <a href="#" wire:click.prevent='editAuthor({{ $author }})'
-                            class="card-btn">Editar</a>
-                        <a href="#" wire:click.prevent='deleteAuthor({{ $author }})'
-                            class="card-btn">Excluir autor</a>
+        <div class="col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body p-4 text-center">
+                    <span class="avatar avatar-xl mb-3 rounded-circle"
+                        style="background-image: url('{{ asset($author->picture) }}')"></span>
+                    <h3 class="m-0 mb-1"><a href="#">{{ $author->name }}</a></h3>
+                    <div class="text-muted">{{ $author->email }}</div>
+                    <div class="mt-3">
+                        <span class="badge bg-purple-lt">{{ $author->authorType->name }}</span>
                     </div>
                 </div>
+                <div class="d-flex">
+                    <a href="#" wire:click.prevent='editAuthor({{ $author }})'
+                        class="card-btn">Editar</a>
+                    <a href="#" wire:click.prevent='deleteAuthor({{ $author }})'
+                        class="card-btn">Excluir autor</a>
+                </div>
             </div>
+        </div>
         @empty
-            <span class="text-danger">Nenhum autor encontrado!</span>
+        <span class="text-danger">Nenhum autor encontrado!</span>
         @endforelse
     </div>
 
@@ -87,7 +87,7 @@
                                 wire:model="name">
                             <span class="text-danger">
                                 @error('name')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -97,7 +97,7 @@
                                 wire:model="email">
                             <span class="text-danger">
                                 @error('email')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -107,7 +107,7 @@
                                 wire:model="username">
                             <span class="text-danger">
                                 @error('username')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -117,12 +117,12 @@
                                 <select name="" id="" class="form-select" wire:model="author_type">
                                     <option value="">-- Nenhum item selecionado --</option>
                                     @foreach (\App\Models\Type::all() as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger">
                                     @error('author_type')
-                                        {{ $message }}
+                                    {{ $message }}
                                     @enderror
                                 </span>
                             </div>
@@ -142,7 +142,7 @@
                                 </label>
                                 <span class="text-danger">
                                     @error('direct_publisher')
-                                        {{ $message }}
+                                    {{ $message }}
                                     @enderror
                                 </span>
                             </div>
@@ -176,7 +176,7 @@
                                 wire:model="name">
                             <span class="text-danger">
                                 @error('name')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -186,7 +186,7 @@
                                 wire:model="email">
                             <span class="text-danger">
                                 @error('email')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -196,7 +196,7 @@
                                 placeholder="Insira um usuário" wire:model="username">
                             <span class="text-danger">
                                 @error('username')
-                                    {{ $message }}
+                                {{ $message }}
                                 @enderror
                             </span>
                         </div>
@@ -206,12 +206,12 @@
                                 <select name="" id="" class="form-select" wire:model="author_type">
                                     <option value="">-- Nenhum item selecionado --</option>
                                     @foreach (\App\Models\Type::all() as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger">
                                     @error('author_type')
-                                        {{ $message }}
+                                    {{ $message }}
                                     @enderror
                                 </span>
                             </div>
@@ -231,7 +231,7 @@
                                 </label>
                                 <span class="text-danger">
                                     @error('direct_publisher')
-                                        {{ $message }}
+                                    {{ $message }}
                                     @enderror
                                 </span>
                             </div>

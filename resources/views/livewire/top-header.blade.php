@@ -6,7 +6,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href=".">
+                <a href="http://localhost:8000">
                     <img src="{{ \App\Models\GeneralSettings::find(1)->blog_logo }}" width="110" height="32"
                         alt="Tabler" class="navbar-brand-image">
                 </a>
@@ -183,32 +183,32 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('author.home') }}">
+                        <li class="nav-item {{ request()->routeIs('author.home') ? 'active' : '' }}">
+                            <a class="nav-link {{ request()->routeIs('author.home') ? 'active' : '' }}" href="{{ route('author.home') }}">
                                 <span class="nav-link-title">
                                     Home
                                 </span>
                             </a>
                         </li>
                         @if (auth()->user()->type == 1)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('author.categories') }}">
-                                    <span class="nav-link-title">
-                                        Categorias
-                                    </span>
-                                </a>
-                            </li>
+                        <li class="nav-item {{ request()->routeIs('author.categories') ? 'active' : '' }}">
+                            <a class="nav-link {{ request()->routeIs('author.categories') ? 'active' : '' }}" href="{{ route('author.categories') }}">
+                                <span class="nav-link-title">
+                                    Categorias
+                                </span>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('author.authors') }}">
-                                    <span class="nav-link-title">
-                                        Autores
-                                    </span>
-                                </a>
-                            </li>
+                        <li class="nav-item {{ request()->routeIs('author.authors') ? 'active' : '' }}">
+                            <a class="nav-link {{ request()->routeIs('author.authors') ? 'active' : '' }}" href="{{ route('author.authors') }}">
+                                <span class="nav-link-title">
+                                    Autores
+                                </span>
+                            </a>
+                        </li>
                         @endif
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                        <li class="nav-item dropdown {{ request()->routeIs('author.posts.*') ? 'active' : '' }}">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('author.posts.*') ? 'active' : '' }}" href="#navbar-extra" data-bs-toggle="dropdown"
                                 data-bs-auto-close="outside" role="button" aria-expanded="false">
                                 <span class="nav-link-title">
                                     Posts
@@ -229,23 +229,23 @@
                             </div>
                         </li>
                         @if (auth()->user()->type == 1)
-                            <li class="nav-item active dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-title">
-                                        Configurações
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('author.settings') }}">
-                                                Configuração geral
-                                            </a>
-                                        </div>
+                        <li class="nav-item dropdown {{ request()->routeIs('author.settings') ? 'active' : '' }}">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('author.settings') ? 'active' : '' }}" href="#navbar-layout" data-bs-toggle="dropdown"
+                                data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-title">
+                                    Configurações
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('author.settings') }}">
+                                            Configuração geral
+                                        </a>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
+                        </li>
                         @endif
                     </ul>
                 </div>
@@ -253,3 +253,43 @@
         </div>
     </header>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const links = document.querySelectorAll('.navbar .nav-link');
+
+        function setActiveByUrl() {
+            const path = location.pathname.replace(/\/+$/, '');
+            links.forEach(a => {
+                const href = (a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '');
+                const isActive = href && href === path;
+                a.classList.toggle('active', isActive);
+
+                if (isActive) {
+                    const ddToggle = a.closest('.dropdown-menu')?.previousElementSibling;
+                    if (ddToggle?.classList.contains('nav-link')) ddToggle.classList.add('active');
+                }
+            });
+        }
+
+        links.forEach(a => {
+            a.addEventListener('click', function() {
+                // só efeito visual imediato; a URL definitiva é conferida pelo setActiveByUrl()
+                links.forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+
+                // ativa o pai dropdown se for item de menu
+                const ddToggle = this.closest('.dropdown-menu')?.previousElementSibling;
+                if (ddToggle) {
+                    document.querySelectorAll('.nav-link.dropdown-toggle').forEach(x => x.classList.remove('active'));
+                    ddToggle.classList.add('active');
+                }
+            });
+        });
+
+        setActiveByUrl();
+
+        // Se usa Livewire navegação sem recarregar:
+        document.addEventListener('livewire:navigated', setActiveByUrl);
+    });
+</script>

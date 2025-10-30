@@ -10,6 +10,7 @@ use Nette\Utils\Random;
 use Illuminate\Support\Facades\Mail;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 
 class Authors extends Component
@@ -24,21 +25,26 @@ class Authors extends Component
         'resetForms',
         'deleteAuthorAction'
     ];
+
     public function mount()
     {
         $this->resetPage();
     }
+
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
     public function resetForms()
     {
         $this->name = $this->email = $this->username = $this->author_type = $this->direct_publisher = null;
         $this->resetErrorBag();
     }
+
     public function addAuthor()
     {
+        // Validação
         $this->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -50,39 +56,40 @@ class Authors extends Component
             'direct_publisher.required' => 'Especifique os acessos de publicação do autor',
         ]);
 
-        // if ($this->isOnline()) {
-        $default_password = Random::generate(8);
+        try {
+            // Gera senha padrão
+            $default_password = \Nette\Utils\Random::generate(8);
 
-        $author = new User();
-        $author->name = $this->name;
-        $author->email = $this->email;
-        $author->username = $this->username;
-        $author->password = Hash::make($default_password);
-        $author->type = $this->author_type;
-        $author->direct_publish = $this->direct_publisher;
-        $author->picture = '/backend/dist/img/authors/default.jpg';
-        $saved = $author->save();
+            // Cria autor
+            $author = new \App\Models\User();
+            $author->name = $this->name;
+            $author->email = $this->email;
+            $author->username = $this->username;
+            $author->password = \Illuminate\Support\Facades\Hash::make($default_password);
+            $author->type = $this->author_type;
+            $author->direct_publish = $this->direct_publisher;
+            $author->picture = '/backend/dist/img/authors/default.jpg';
 
-        $data = [
-            'name' => $this->name,
-            'username' => $this->username,
-            'email' => $this->email,
-            'password' => $default_password,
-            'url' => route('author.profile'),
-        ];
+            $saved = $author->save();
 
-        $author_email = $this->email;
-        $author_name = $this->name;
+            if (!$saved) {
+                session()->flash('error', 'Algo deu errado ao salvar o autor.');
+                return;
+            }
 
-        if ($saved) {
-            // Mail::send('emails.new-author-email-template', ['data' => (object) $data], function ($message) use ($author_email, $author_name) {
-            //     $message->from('noreply@example.com', 'Blog');
-            //     $message->to($author_email, $author_name)
-            //         ->subject('Criação de conta');
-            // });
+            // Monta dados pro e-mail
+            $data = (object)[
+                'name' => $author->name,
+                'username' => $author->username,
+                'email' => $author->email,
+                'password' => $default_password,
+                'url' => route('author.profile'),
+            ];
 
-            $mail_body = view('emails.new-author-email-template', ['data' => (object) $data])->render();
+            // Renderiza template HTML bonitão
+            $mail_body = view('emails.new-author-email-template', compact('data'))->render();
 
+            // Config de envio
             $mailConfig = [
                 'mail_from_email' => config('mail.from.address'),
                 'mail_from_name' => config('mail.from.name'),
@@ -92,21 +99,34 @@ class Authors extends Component
                 'mail_body' => $mail_body,
             ];
 
-
+            // Envia e-mail
             sendMail($mailConfig);
 
-            session()->flash('success', 'Novo autor criado com sucesso');
-            $this->name = $this->email = $this->username = $this->author_type = $this->direct_publisher = null;
-            $this->dispatchBrowserEvent('hide_add_author_modal');
-        } else {
-            session()->flash('error', 'Algo deu errado');
-        }
+            // Limpa formulário e fecha modal
+            $this->reset([
+                'name',
+                'email',
+                'username',
+                'author_type',
+                'direct_publisher',
+            ]);
 
-        session()->flash('success', 'Autor cadastrado e e-mail enviado com sucesso!');
-        // } else {
-        //     session()->flash('error', 'Você está offline, verifique sua conexão e tente novamente mais tarde.');
-        // }
+            $this->dispatchBrowserEvent('hide_add_author_modal');
+
+            // Mensagem de sucesso
+            session()->flash('success', 'Autor cadastrado e e-mail enviado com sucesso!');
+        } catch (\Throwable $e) {
+            \Log::error('Erro ao adicionar autor: ' . $e->getMessage(), [
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'author_email' => $this->email ?? null,
+                'author_username' => $this->username ?? null,
+            ]);
+
+            session()->flash('error', 'Não foi possível cadastrar o autor. Verifique os dados e tente novamente.');
+        }
     }
+
     public function editAuthor($author)
     {
         $this->selected_author_id = $author['id'];
@@ -149,6 +169,7 @@ class Authors extends Component
             session()->flash('error', 'Algo deu errado');
         }
     }
+
     public function deleteAuthor($author)
     {
         $this->dispatchBrowserEvent('deleteAuthor', [
@@ -173,13 +194,10 @@ class Authors extends Component
             File::delete($fullPath);
         }
 
-
         $author->delete();
 
         session()->flash('success', 'Autor excluído com sucesso!');
     }
-
-
 
     public function showToast($message, $type)
     {
@@ -188,6 +206,7 @@ class Authors extends Component
             'message' => $message
         ]);
     }
+
     public function render()
     {
         return view('livewire.authors', [
