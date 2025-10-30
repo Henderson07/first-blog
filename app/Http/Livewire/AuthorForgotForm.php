@@ -32,23 +32,17 @@ class AuthorForgotForm extends Component
 
         $user  = User::where('email', $this->email)->first();
         $link  = route('author.reset-form', ['token' => $token, 'email' => $this->email]);
-        $body_message = "Recebemos uma solicitação para redefinir a senha da conta do <b>Blog</b> associada a " . $this->email . ". <br> Você pode redefinir sua senha clicando no botão abaixo.";
-        $body_message .= '<br>';
-        $body_message .= '<a href="' . $link . '" target="_blank" style="color:#FFF;border-color:#22bc66;border-style:solid;border-width:10px 180px; background-color:#22bc66;display:inline-block;text-decoration:none;border-radius:3px;
-        box-shadow:0 2px 3px rgba(0,0,0,0.16);-webkit-text-size-adjust:none;box-sizing:border-box">Alterar senha</a>';
-        $body_message .= '<br>';
-        $body_message .= 'Se você não solicitou uma redefinição de senha, ignore este e-mail';
+        $body_message  = "Recebemos uma solicitação para redefinir a senha da conta do <b>Blog Hensso</b> associada a " . $this->email . ".<br><br>";
+        $body_message .= "Você pode redefinir sua senha clicando no botão abaixo:<br><br>";
+        $body_message .= '<div style="text-align:center;">
+            <a href="' . $link . '" class="btn">Redefinir senha</a>
+            </div>';
 
         $data = array(
             'name' => $user->name,
             'body_message' => $body_message,
         );
 
-        // Mail::send('emails.forgot-email-template', $data, function ($message) use ($user) {
-        //     $message->from('noreply@example.com', 'Blog');
-        //     $message->to($user->email, $user->name)
-        //         ->subject('Redefinir senha');
-        // });
         $mail_body = view('emails.forgot-email-template', $data)->render();
         $mailConfig = [
             'mail_from_email' => config('mail.from.address'),
@@ -59,7 +53,6 @@ class AuthorForgotForm extends Component
             'mail_body' => $mail_body,
         ];
 
-        // dd($mailConfig);
         sendMail($mailConfig);
 
         $this->email = null;

@@ -1,81 +1,146 @@
 @extends('backend.layouts.pages-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Home')
+@section('pageTitle', 'Dashboard')
 @section('content')
 
+<div class="page-header mb-4">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">Painel de Controle</h2>
+                <p class="text-muted mb-0">Resumo geral do blog</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="d-print-none" aria-label="Page header">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">Descrição</h2>
+<div class="container-xl">
+    <!-- Cards de estatísticas -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>{{ $totalPosts ?? 0 }}</h3>
+                    <p class="text-muted">Posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>{{ $totalCategorias ?? 0 }}</h3>
+                    <p class="text-muted">Categorias</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>{{ $totalSubCategorias ?? 0 }}</h3>
+                    <p class="text-muted">Subcategorias</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>{{ $totalAutores ?? 0 }}</h3>
+                    <p class="text-muted">Autores</p>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-9">
-            <div class="card card-lg">
-                <div class="card-body markdown">
-                    <h1>💼 Sobre mim</h1>
-                    <p>
-                        Sou desenvolvedor Full Stack com foco no desenvolvimento de sistemas ERP web, atuando tanto no
-                        backend quanto no frontend. Tenho experiência consolidada em PHP (Laravel), C# (.NET), JavaScript,
-                        MySQL e Docker, aplicando práticas de Clean Code, princípios SOLID e versionamento com Git.
-
-                        No ambiente corporativo, contribuo para a implementação de funcionalidades, manutenção de código
-                        legado, análise de falhas e melhorias contínuas nos processos. Tenho familiaridade com estrutura MVC
-                        e testes automatizados.
-
-                        Busco constantemente aprimorar minhas habilidades técnicas e oferecer soluções robustas, seguras e
-                        escaláveis da forma mais abstrata possível para os sistemas que desenvolvo.
-                    </p>
-                    <p>
-                        Atuo no desenvolvimento e manutenção de sistemas ERP, com foco em estabilidade, performance e
-                        escalabilidade. Trabalho no backend (APIs e lógica de negócio) e frontend (interfaces dinâmicas),
-                        garantindo uma experiência robusta para o usuário.
-                    </p>
-                    <h2>🛠️ Tecnologias & Ferramentas</h2>
-
-                    <ol>
-                        <li>
-                            - 💻 PHP (Laravel), C#, .NET, JavaScript (jQuery, Blade)
-                        </li>
-                        <li>
-                            - 🛢️ MySQL
-                        </li>
-                        <li>- 🐳 Docker</li>
-                        <li>- 🧪 PHPUnit, Testes Unitários</li>
-                        <li>- 🔄 Git, GitHub</li>
-                        <li>- 🎯 SOLID, Clean Code</li>
-                    </ol>
-                    <h3>🎓 Formação Acadêmica</h3>
-                    <p>
-                        Formações realizadas nas faculdades Unopar e Unicv
-                    </p>
-                    <ul>
-                        <li>👨‍🎓 Análise e Desenvolvimento de Sistemas</li>
-                        <li>🎓 Pós-graduação em Banco de Dados</li>
-                    </ul>
-
-                    <h3>🏢 Experiência Atual</h3>
-                    <p>
-                        Infinit Soluções** – Full Stack Developer
-                    </p>
-                    <ul>
-                        <li>📍 Maringá - PR · Híbrido </li>
-                        <li>🕒 Jan/2025 – Atualmente</li>
-                    </ul>
-                    <p>
-                        Atuo no desenvolvimento e manutenção de sistemas ERP, com foco em estabilidade, performance e
-                        escalabilidade. Trabalho no backend (APIs e lógica de negócio) e frontend (interfaces dinâmicas),
-                        garantindo uma experiência robusta para o usuário.
-                    </p>
-
-                </div>
+    <!-- Gráfico de posts por categoria -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">Posts por Categoria</h3>
+            <small class="text-muted">Top 6 categorias mais usadas</small>
+        </div>
+        <div class="card-body d-flex justify-content-center">
+            <div style="max-width: 320px; max-height: 320px;">
+                <canvas id="categoryChart"></canvas>
             </div>
         </div>
     </div>
+
+    <!-- Últimos posts -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">Últimos Posts</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Categoria</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($latestPosts as $post)
+                    <tr>
+                        <td>{{ $post->post_title }}</td>
+                        <td>{{ $post->author->name ?? '-' }}</td>
+                        <td>{{ $post->subcategory->subcategory_name ?? '-' }}</td>
+                        <td>{{ $post->created_at->format('d/m/Y') }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center text-muted p-3">Nenhum post encontrado</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Posts por Categoria',
+                    data: categoryChartData,
+                    backgroundColor: [
+                        '#2563eb', '#16a34a', '#dc2626',
+                        '#f59e0b', '#7c3aed', '#0ea5e9'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 14,
+                            padding: 10,
+                            font: {
+                                size: 13
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 @endsection

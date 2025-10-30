@@ -16,8 +16,6 @@ Route::prefix('author')->name('author.')->group(function () {
         Route::view('/profile', 'backend.pages.profile')->name('profile');
         Route::post('/change-profile-picture', [AuthorController::class, 'changeProfilePicture'])->name('change-profile-picture');
 
-
-
         // somente o administrador pode acessar as seguintes rotas
         Route::middleware(['isAdmin'])->group(function () {
             Route::view('/settings', 'backend.pages.settings')->name('settings');
