@@ -28,7 +28,8 @@
     <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="/amsify/amsify.suggestags.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiMdYFZ6bFqKk2tKxGv0P3Fz7kIoy6hlPp8PjUJvQFu+g5q1ukGk0kN6aU1kZ4qf7G4fC7x4v0O0VqXG9ZyQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- app css -->
 
     @stack('stylesheet')
