@@ -137,35 +137,36 @@ if (!function_exists('latest_sidebar_posts')) {
 }
 
 /**
- * Função auxiliar que encaminha email usando a lib php mailer
+ * Função auxiliar que encaminha email usando a lib PHPMailer via Composer
  * => sendMail($mailConfig);
  */
 if (!function_exists('sendMail')) {
     function sendMail($mailConfig)
     {
-        require 'PHPMailer/src/Exception.php';
-        require 'PHPMailer/src/PHPMailer.php';
-        require 'PHPMailer/src/SMTP.php';
-
+        // PHPMailer já é carregado automaticamente pelo Composer
         $mail = new PHPMailer(true);
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->Host       = config('mail.mailers.smtp.host');
-        $mail->SMTPAuth = true;
-        $mail->Username   = config('mail.mailers.smtp.username');
-        $mail->Password   = config('mail.mailers.smtp.password');
-        $mail->SMTPSecure = config('mail.mailers.smtp.encryption');
-        $mail->Port       = config('mail.mailers.smtp.port');
-        $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
-        $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']);
-        $mail->isHTML(true);
-        $mail->Subject = $mailConfig['mail_subject'];
-        $mail->Body = $mailConfig['mail_body'];
-        $mail->CharSet = 'UTF-8';
 
-        if ($mail->send()) {
+        try {
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host       = config('mail.mailers.smtp.host');
+            $mail->SMTPAuth   = true;
+            $mail->Username   = config('mail.mailers.smtp.username');
+            $mail->Password   = config('mail.mailers.smtp.password');
+            $mail->SMTPSecure = config('mail.mailers.smtp.encryption');
+            $mail->Port       = config('mail.mailers.smtp.port');
+
+            $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
+            $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']);
+            $mail->isHTML(true);
+            $mail->Subject = $mailConfig['mail_subject'];
+            $mail->Body    = $mailConfig['mail_body'];
+            $mail->CharSet = 'UTF-8';
+
+            $mail->send();
             return true;
-        } else {
+        } catch (Exception $e) {
+            \Log::error('Erro ao enviar e-mail: ' . $mail->ErrorInfo);
             return false;
         }
     }
