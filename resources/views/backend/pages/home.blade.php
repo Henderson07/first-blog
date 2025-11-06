@@ -97,7 +97,7 @@
     </div>
 </div>
 
-<!-- Chart.js -->
+<!-- Gráfico (Chart.js) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -105,37 +105,17 @@
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: chartLabels,
+                labels: @json($chartLabels),
                 datasets: [{
                     label: 'Posts por Categoria',
-                    data: categoryChartData,
-                    backgroundColor: [
-                        '#2563eb', '#16a34a', '#dc2626',
-                        '#f59e0b', '#7c3aed', '#0ea5e9'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
+                    data: @json($chartData),
+                    borderWidth: 1
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom',
-                        labels: {
-                            boxWidth: 14,
-                            padding: 10,
-                            font: {
-                                size: 13
-                            }
-                        }
-                    }
-                },
-                layout: {
-                    padding: {
-                        top: 10,
-                        bottom: 10
+                        position: 'bottom'
                     }
                 }
             }
