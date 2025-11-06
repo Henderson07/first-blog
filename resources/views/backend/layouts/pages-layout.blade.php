@@ -24,17 +24,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.14.0/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.min.css">
-    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.structure.min.css">
-    <link rel="stylesheet" href="/jquery-ui-1.13.3/jquery-ui.theme.min.css">
+
+    <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.min.css"
+        integrity="sha384-hZWu4ng7BovWfKTxP8PqKj1vI5OIB7R5XxWObMxX4oEGC2b4nZ1H1vToz8vUv3Pj"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="/amsify/amsify.suggestags.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiMdYFZ6bFqKk2tKxGv0P3Fz7kIoy6hlPp8PjUJvQFu+g5q1ukGk0kN6aU1kZ4qf7G4fC7x4v0O0VqXG9ZyQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- app css -->
 
     @stack('stylesheet')
     @livewireStyles
     <link href="/backend/dist/css/demo.min.css?1684106062" rel="stylesheet" />
-    <link href="/css/app.cs" rel="stylesheet" />
 </head>
 
 <body>
@@ -63,7 +65,9 @@
     <script src="/backend/dist/libs/ijaboCropTool/ijaboCropTool.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="/jquery-ui-1.13.3/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"
+        integrity="sha384-2O2hFZmKZytEtV0Ir/4+5uVGOTmcOfmxFvCgPqskGqDG1G8xX2vG5Erd09C/xXEK"
+        crossorigin="anonymous"></script>
     <script src="/amsify/jquery.amsify.suggestags.js"></script>
     <!-- Tabler Core -->
     <script src="/backend/dist/js/tabler.min.js?1684106062" defer></script>
