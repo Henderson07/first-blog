@@ -6,16 +6,20 @@ services:
         build: .
         restart: always
         ports:
-            - "8000:80"
+            - "80:80"
+            - "443:443"
         volumes:
             - ./:/var/www/html
+            - ./uploads:/var/www/html/public/uploads
+            - ./storage:/var/www/html/storage
+            - /etc/letsencrypt:/etc/letsencrypt:ro   
         depends_on:
             - db
         environment:
-            - DB_HOST=db
-            - DB_DATABASE=larablog_db
-            - DB_USERNAME=root
-            - DB_PASSWORD=root
+            DB_HOST: db
+            DB_DATABASE: larablog_db
+            DB_USERNAME: root
+            DB_PASSWORD: root
 
     db:
         container_name: blog-mysql
