@@ -82,7 +82,12 @@
     CKEDITOR.warn = function() {};
 
     // Inicializa o editor normalmente
-    CKEDITOR.replace('post_content');
+    CKEDITOR.replace('post_content', {
+        filebrowserBrowseUrl: '/elfinder/ckeditor',
+        filebrowserImageBrowseUrl: '/elfinder/ckeditor',
+        filebrowserUploadUrl: '/elfinder/connector?_token={{ csrf_token() }}',
+        filebrowserImageUploadUrl: '/elfinder/connector?_token={{ csrf_token() }}',
+    });
 </script>
 
 <script>

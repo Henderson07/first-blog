@@ -1,0 +1,10 @@
+/* Desliga o filtro automático do Tabler no logo */
+.navbar-brand-autodark .navbar-brand-image {
+    filter: none !important;
+}
+
+/* Se quiser mexer só no dark: */
+:root[data-bs-theme="light"] .navbar-brand-autodark .navbar-brand-image {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .06);
+    border-radius: .375rem;
+}

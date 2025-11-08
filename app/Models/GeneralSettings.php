@@ -14,14 +14,25 @@ class GeneralSettings extends Model
         'blog_email',
         'blog_description',
         'blog_logo',
+        'blog_logo_dark',
         'blog_favicon',
     ];
 
+    // Caminho do logo principal
     public function getBlogLogoAttribute($value)
     {
-        return asset("backend/dist/img/logo-favicon/" . $value);
+        return $value ? asset('backend/dist/img/logo-favicon/' . $value) : null;
     }
-    public function getBlogFaviconAttribute($value){
-        return asset('backend/dist/img/logo-favicon/' . $value);
+
+    // Caminho do logo escuro
+    public function getBlogLogoDarkAttribute($value)
+    {
+        return $value ? asset('backend/dist/img/logo-favicon/' . $value) : $this->blog_logo;
+    }
+
+    // Caminho do favicon
+    public function getBlogFaviconAttribute($value)
+    {
+        return $value ? asset('backend/dist/img/logo-favicon/' . $value) : null;
     }
 }

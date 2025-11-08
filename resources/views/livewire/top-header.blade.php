@@ -6,9 +6,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href="http://localhost:8000">
-                    <img src="{{ \App\Models\GeneralSettings::find(1)->blog_logo }}" width="110" height="32"
-                        alt="Tabler" class="navbar-brand-image">
+                <a href="https://www.hensso.blog/">
+                    <!-- Logo claro -->
+                    <img src="{{ \App\Models\GeneralSettings::find(1)->blog_logo_dark }}"
+                        width="110" height="32" alt="Logo claro"
+                        class="navbar-brand-image hide-theme-light">
+
+                    <!-- Logo escuro -->
+                    <img src="{{ \App\Models\GeneralSettings::find(1)->blog_logo }}"
+                        width="110" height="32" alt="Logo escuro"
+                        class="navbar-brand-image hide-theme-dark">
                 </a>
             </h1>
             <div class="navbar-nav flex-row order-md-last">

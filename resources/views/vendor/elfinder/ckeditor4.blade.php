@@ -6,14 +6,11 @@
     <title>Larablog Filemanager</title>
 
     <!-- jQuery and jQuery UI (REQUIRED) -->
-    <link rel="stylesheet"
-        href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.min.css"
-        integrity="sha384-hZWu4ng7BovWfKTxP8PqKj1vI5OIB7R5XxWObMxX4oEGC2b4nZ1H1vToz8vUv3Pj"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.min.css">
+
+    <!-- Ordem correta: jQuery primeiro, depois jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"
-        integrity="sha384-2O2hFZmKZytEtV0Ir/4+5uVGOTmcOfmxFvCgPqskGqDG1G8xX2vG5Erd09C/xXEK"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
 
     <!-- elFinder CSS (REQUIRED) -->
     <link rel="stylesheet" type="text/css" href="{{ asset($dir . '/css/elfinder.min.css') }}">
@@ -27,44 +24,33 @@
     <script src="{{ asset($dir . "/js/i18n/elfinder.$locale.js") }}"></script>
     @endif
 
-    <!-- elFinder initialization (REQUIRED) -->
-    <script type="text/javascript" charset="utf-8">
-        // Helper function to get parameters from the query string.
-        function getUrlParam(paramName) {
-            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
-            var match = window.location.search.match(reParam);
+    <!-- elFinder initialization -->
+    <script src="{{ asset('backend/dist/js/elfinder-init.js') }}"></script>
 
-            return (match && match.length > 1) ? match[1] : '';
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elfinderElement = document.getElementById('elfinder');
 
-        $().ready(function() {
-            var funcNum = getUrlParam('CKEditorFuncNum');
+            // Passa as variáveis PHP como atributos HTML, evitando erros de formatação
+            elfinderElement.dataset.connectorUrl = "{{ route('elfinder.connector') }}";
+            elfinderElement.dataset.soundsPath = "{{ asset($dir . '/sounds') }}";
+            elfinderElement.dataset.locale = "{{ $locale ?? 'en' }}";
+            elfinderElement.dataset.csrfToken = "{{ csrf_token() }}";
 
-            var elf = $('#elfinder').elfinder({
-                // set your elFinder options here
-                @if($locale)
-                lang: '{{ $locale }}', // locale
-                @endif
-                customData: {
-                    _token: '{{ csrf_token() }}'
-                },
-                url: '{{ route('
-                elfinder.connector ') }}', // connector URL
-                soundPath: '{{ asset($dir . ' / sounds ') }}',
-                getFileCallback: function(file) {
-                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
-                    window.close();
-                }
-            }).elfinder('instance');
+            // Inicializa o elFinder usando as variáveis lidas do HTML
+            initElfinder(
+                elfinderElement.dataset.connectorUrl,
+                elfinderElement.dataset.soundsPath,
+                elfinderElement.dataset.locale,
+                elfinderElement.dataset.csrfToken
+            );
         });
     </script>
 </head>
 
 <body>
-
-    <!-- Element where elFinder will be created (REQUIRED) -->
+    <!-- Elemento onde o elFinder será renderizado -->
     <div id="elfinder"></div>
-
 </body>
 
 </html>

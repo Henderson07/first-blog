@@ -71,8 +71,11 @@
     <script src="/amsify/jquery.amsify.suggestags.js"></script>
     <!-- Tabler Core -->
     <script src="/backend/dist/js/tabler.min.js?1684106062" defer></script>
+    <script src="/backend/dist/js/demo-theme.min.js?1684106062"></script>
     @stack('scripts')
     @livewireScripts
+    <script src="/backend/dist/js/demo.min.js?1684106062" defer></script>
+    <link href="/backend/dist/css/custom.css" rel="stylesheet" />
 
     <script>
         $('input[name="post_tags"]').amsifySuggestags();
@@ -98,32 +101,3 @@
 </body>
 
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const themeParam = urlParams.get('theme');
-
-        const root = document.documentElement; // <-- importante: é o <html>, não o body
-
-        if (themeParam === 'dark') {
-            root.classList.remove('theme-light');
-            root.classList.add('theme-dark');
-            localStorage.setItem('theme', 'dark');
-        } else if (themeParam === 'light') {
-            root.classList.remove('theme-dark');
-            root.classList.add('theme-light');
-            localStorage.setItem('theme', 'light');
-        } else {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                root.classList.add('theme-dark');
-            } else if (saved === 'light') {
-                root.classList.add('theme-light');
-            } else {
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    root.classList.add('theme-dark');
-                }
-            }
-        }
-    });
-</script>
