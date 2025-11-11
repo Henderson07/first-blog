@@ -110,4 +110,48 @@ class BlogController extends Controller
 
         return view('frontend.pages.tag_posts', $data);
     }
+
+    public function send(Request $request)
+    {
+        $request->validate([
+            'name'    => 'required|string|max:100',
+            'email'   => 'required|email',
+            'subject' => 'required|string|max:150',
+            'message' => 'required|string|max:1000',
+        ]);
+
+        try {
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+            ];
+
+            // Renderiza o e-mail com o layout padronizado
+            $mail_body = view('emails.contact-email-template', compact('data'))->render();
+
+            $mailConfig = [
+                'mail_from_email'      => config('mail.from.address'),
+                'mail_from_name'       => config('mail.from.name'),
+                'mail_recipient_email' => 'henderson.larablog@gmail.com',
+                'mail_recipient_name'  => 'Henderson Camilo',
+                'mail_subject'         => "Novo contato: {$request->subject}",
+                'mail_body'            => $mail_body,
+            ];
+
+            sendMail($mailConfig);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Mensagem enviada com sucesso! Entrarei em contato em breve.'
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Erro ao enviar contato: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao enviar mensagem. Tente novamente mais tarde.'
+            ], 500);
+        }
+    }
 }

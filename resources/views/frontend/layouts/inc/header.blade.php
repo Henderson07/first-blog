@@ -19,27 +19,27 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('about') }}">Sobre mim</a>
                     </li>
                     @foreach (\App\Models\Category::whereHas('subcategories', function ($q) {
-        $q->whereHas('posts');
-    })->orderBy('ordering', 'asc')->get() as $category)
-                        <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ $category->category_name }}
-                            </a>
-                            <div class="dropdown-menu">
-                                @foreach (\App\Models\SubCategory::where('parent_category', $category->id)->orderBy('ordering', 'asc')->whereHas('posts')->get() as $subcategory)
-                                    <a class="dropdown-item"
-                                        href="{{ route('category_posts', $subcategory->slug) }}">{{ $subcategory->subcategory_name }}</a>
-                                @endforeach
-                            </div>
-                        </li>
+                    $q->whereHas('posts');
+                    })->orderBy('ordering', 'asc')->get() as $category)
+                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ $category->category_name }}
+                        </a>
+                        <div class="dropdown-menu">
+                            @foreach (\App\Models\SubCategory::where('parent_category', $category->id)->orderBy('ordering', 'asc')->whereHas('posts')->get() as $subcategory)
+                            <a class="dropdown-item"
+                                href="{{ route('category_posts', $subcategory->slug) }}">{{ $subcategory->subcategory_name }}</a>
+                            @endforeach
+                        </div>
+                    </li>
                     @endforeach
                     @foreach (\App\Models\SubCategory::where('parent_category', 0)->whereHas('posts')->orderBy('ordering', 'asc')->get() as $subcategory)
-                        <li class="nav-item"> <a class="nav-link"
-                                href="{{ route('category_posts', $subcategory->slug) }}">{{ $subcategory->subcategory_name }}</a>
-                        </li>
+                    <li class="nav-item"> <a class="nav-link"
+                            href="{{ route('category_posts', $subcategory->slug) }}">{{ $subcategory->subcategory_name }}</a>
+                    </li>
                     @endforeach
                     <li class="nav-item"> <a class="nav-link"
-                            href="{{ route('category_posts', $subcategory->slug) }}">Contact</a>
+                            href="{{ route('contact') }}">Contato</a>
                     </li>
                 </ul>
             </div>

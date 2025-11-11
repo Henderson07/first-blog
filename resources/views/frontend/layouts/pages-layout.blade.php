@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en-us">
 
 <head>
@@ -16,12 +15,12 @@
     <!-- # Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Neuton:wght@700&family=Work+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Neuton:wght@700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- # CSS Plugins -->
     <link rel="stylesheet" href="/frontend/plugins/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     @stack('stylesheets')
 
     <!-- # Main Style Sheet -->
@@ -29,7 +28,6 @@
 </head>
 
 <body>
-
     @include('frontend.layouts.inc.header')
 
     <main>
@@ -42,14 +40,30 @@
 
     @include('frontend.layouts.inc.footer')
 
-
-    <!-- # JS Plugins -->
+    <!--  JS Plugins -->
     <script src="/frontend/plugins/jquery/jquery.min.js"></script>
     <script src="/frontend/plugins/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        // Configuração global do Toastr
+        if (typeof toastr !== 'undefined') {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: "toast-top-right",
+                timeOut: 4000
+            };
+        }
+    </script>
+
     @stack('scripts')
+
     <!-- Main Script -->
     <script src="/frontend/js/script.js"></script>
-
 </body>
 
 </html>

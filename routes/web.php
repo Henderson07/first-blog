@@ -24,3 +24,5 @@ Route::get('/category/{any}', [BlogController::class, 'categoryPosts'])->name('c
 Route::get('/posts/tag/{any}', [BlogController::class, 'tagPosts'])->name('tag_posts');
 Route::get('/search', [BlogController::class, 'searchBlog'])->name('search_posts');
 Route::view('/about', 'frontend.pages.about')->name('about');
+Route::view('/contact', 'frontend.pages.contact')->name('contact');
+Route::post('/contact/send', [BlogController::class, 'send'])->name('contact.send');
