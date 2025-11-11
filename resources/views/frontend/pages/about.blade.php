@@ -1,7 +1,6 @@
 @extends('frontend.layouts.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Sobre mim')
 @section('content')
-
 <main>
     <section class="section">
         <div class="container">
