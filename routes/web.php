@@ -23,3 +23,4 @@ Route::get('/article/{any}', [BlogController::class, 'readPosts'])->name('read_p
 Route::get('/category/{any}', [BlogController::class, 'categoryPosts'])->name('category_posts');
 Route::get('/posts/tag/{any}', [BlogController::class, 'tagPosts'])->name('tag_posts');
 Route::get('/search', [BlogController::class, 'searchBlog'])->name('search_posts');
+Route::view('/about', 'frontend.pages.about')->name('about');
