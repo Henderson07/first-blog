@@ -15,6 +15,7 @@ class GeneralSettingsSeeder extends Seeder
                 'blog_email' => 'contato@meublog.com',
                 'blog_description' => 'Descrição do meu blog',
                 'blog_logo' => 'logo.png',
+                'blog_logo_dark' => 'logo-dark.png',
                 'blog_favicon' => 'favicon.ico'
             ]
         );
