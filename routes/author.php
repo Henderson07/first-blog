@@ -8,6 +8,8 @@ Route::prefix('author')->name('author.')->group(function () {
         Route::view('/login', 'backend.pages.auth.login')->name('login');
         Route::view('/forgot-password', 'backend.pages.auth.forgot')->name('forgot-password');
         Route::get('/password/reset/{token}', [AuthorController::class, 'ResetForm'])->name('reset-form');
+        Route::view('/first-login', 'backend.pages.auth.first-login')->name('first-login');
+        Route::view('/terms-of-service', 'backend.pages.auth.terms-of-service')->name('terms-of-service');
     });
 
     Route::middleware(['auth:web'])->group(function () {

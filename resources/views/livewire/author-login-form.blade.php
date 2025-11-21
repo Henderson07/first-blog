@@ -1,13 +1,13 @@
 <div>
     @if (Session::get('fail'))
-        <div class="alert alert-danger">
-            {{ Session::get('fail') }}
-        </div>
+    <div class="alert alert-danger">
+        {{ Session::get('fail') }}
+    </div>
     @endif
     @if (Session::get('success'))
-        <div class="alert alert-success">
-            {!! Session::get('success') !!}
-        </div>
+    <div class="alert alert-success">
+        {!! Session::get('success') !!}
+    </div>
     @endif
     <form class="card card-md" wire:submit.prevent="LoginHandler()" method="post" autocomplete="off" novalidate="">
         <div class="card-body">
@@ -17,7 +17,7 @@
                 <input type="text" class="form-control" placeholder="Insira o e-mail ou nome de usuário"
                     autocomplete="off" wire:model="login_id">
                 @error('login_id')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="mb-2">
@@ -49,7 +49,7 @@
 
                 </div>
                 @error('password')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="mb-2">
@@ -63,4 +63,13 @@
             </div>
         </div>
     </form>
+</div>
+<div class="text-center text-secondary mt-3">
+    <font dir="auto" style="vertical-align: inherit;">
+        <font dir="auto" style="vertical-align: inherit;">Ainda não tem uma conta? </font>
+    </font><a href="{{ route('author.first-login') }}" tabindex="-1">
+        <font dir="auto" style="vertical-align: inherit;">
+            <font dir="auto" style="vertical-align: inherit;">Cadastre-se</font>
+        </font>
+    </a>
 </div>

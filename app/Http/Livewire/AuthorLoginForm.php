@@ -8,11 +8,11 @@ use App\Models\User;
 
 class AuthorLoginForm extends Component
 {
-    public $login_id, $password;
+    public $login_id = '', $password;
     public $returnUrl;
     public function mount()
     {
-        $this->returnUrl = request()->returnUrl;
+        $this->login_id = request()->get('email', '');
     }
 
     public function  LoginHandler()

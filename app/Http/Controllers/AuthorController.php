@@ -54,6 +54,7 @@ class AuthorController extends Controller
         Auth::guard('web')->logout();
         return redirect()->route('author.login');
     }
+
     public function ResetForm(Request $request, $token = null)
     {
         $data = [
@@ -61,6 +62,7 @@ class AuthorController extends Controller
         ];
         return view('backend.pages.auth.reset', $data)->with(['token' => $token, 'email' => $request->email]);
     }
+
     public function changeProfilePicture(Request $request)
     {
         $user = User::find(auth('web')->id());
@@ -215,7 +217,7 @@ class AuthorController extends Controller
             'post_title' => 'required|unique:posts,post_title',
             'post_content' => 'required',
             'post_category' => 'required|exists:sub_categories,id',
-            'featured_image' => 'required|mimes:jpeg,jpg,png|max:1024',
+            'featured_image' => 'required|mimes:jpeg,jpg,png,gif|max:5120',
         ]);
 
         try {
